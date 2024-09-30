@@ -1,0 +1,34 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py task=forecasting
+
+defaults:
+  - override /data: electricity
+  - override /model: biRecMulti
+  - override /model/net/embedding: Conv_Embedding
+  - override /model/net/mapper: RLinear
+  - override /trainer: ddp
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags:
+  - ${data.data_name}
+  - "RLinear"
+seed: 1234
+
+model:
+  net:
+    task: forecasting
+
+data:
+  input_len: 96
+  output_len: 96
+
+logger:
+  wandb:
+    tags: ${tags}
+    group: "ETTh1"
+  aim:
+    experiment: "ETTh1"

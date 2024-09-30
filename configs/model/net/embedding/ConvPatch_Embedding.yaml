@@ -1,0 +1,5 @@
+_target_: src.models.components.modules.embedding.ConvPatch_Embedding
+_partial_: true
+type: patch
+conv_layers: 5
+patch_len: 16

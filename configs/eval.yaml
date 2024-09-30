@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - data: ETTh2 # choose datamodule with `test_dataloader()` for evaluation
+  - model: biRecMultiNorm
+  - logger: null
+  - trainer: default
+  - paths: default
+  - extras: default
+  - hydra: default
+  - task: forecasting_multi_norm
+
+task_name: "eval"
+
+tags: ["dev"]
+
+# passing checkpoint path is necessary for evaluation
+ckpt_path: /home/yyx/RAN_lightning/logs/train/runs/2024-09-21_17-04-28/checkpoints/last.ckpt
+
+

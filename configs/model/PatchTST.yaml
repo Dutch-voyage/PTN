@@ -1,0 +1,15 @@
+defaults:
+  - default
+
+net:
+  _target_: src.models.components.PatchTST.Model
+  d_model: 16
+  d_ff: 128
+  input_len: ${data.input_len}
+  output_len: ${data.output_len}
+  num_heads: 4
+  num_layers: 3
+  num_channels: ${data.num_channels}
+  patch_len: 16
+  stride: 8
+

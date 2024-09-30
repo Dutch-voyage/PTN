@@ -1,0 +1,4 @@
+_target_: src.models.components.modules.embedding.Patch_Embedding
+_partial_: true
+type: patch
+patch_len: 24

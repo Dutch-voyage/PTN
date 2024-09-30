@@ -1,0 +1,12 @@
+defaults:
+  - default
+aux_model:
+  _target_: src.models.components.iTransformer.Model
+  _partial_: true
+  d_model: 512
+  input_len: ${data.input_len}
+  output_len: ${data.output_len}
+  num_heads: 8
+  num_layers: 2
+  num_channels: ${data.num_channels}
+  ifmap: true

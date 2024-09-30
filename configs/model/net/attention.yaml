@@ -1,0 +1,7 @@
+attn_block:
+  _target_: src.models.components.net.attention.Attn_Block
+  num_heads: 1
+  num_layers: 2
+  if_apply_rope: false
+  causal_mask: false
+  res_attn: false

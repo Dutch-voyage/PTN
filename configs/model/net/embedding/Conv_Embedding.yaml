@@ -1,0 +1,6 @@
+_target_: src.models.components.modules.embedding.Conv_Embedding
+_partial_: true
+type: conv
+conv_layers: 4
+amp_factor: 1
+patch_len: null

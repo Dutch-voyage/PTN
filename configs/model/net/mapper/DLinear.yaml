@@ -1,0 +1,13 @@
+defaults:
+  - default
+aux_model:
+  _target_: src.models.components.DLinear.Model
+  _partial_: true
+  input_len: ${data.input_len}
+  output_len: ${data.output_len}
+  num_channels: ${data.num_channels}
+  moving_avg: 25
+  individual: false
+  with_revin: true
+  eps: 1e-5
+aux_model_stu: null

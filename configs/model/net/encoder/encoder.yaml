@@ -1,0 +1,11 @@
+_target_: src.models.components.modules.encoder.Encoder
+_partial_: true
+attn_block:
+  _target_: src.models.components.modules.attention.Attn_Block
+  _partial_: true
+  num_heads: 1
+  num_layers: 2
+  norm_type: LayerNorm
+  if_apply_rope: false
+  causal_mask: false
+  res_attn: false

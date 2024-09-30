@@ -1,0 +1,4 @@
+defaults:
+  - default
+  - stack_parameters_management
+  - _self_

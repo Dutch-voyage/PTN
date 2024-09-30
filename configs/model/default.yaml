@@ -1,0 +1,9 @@
+_target_: src.models.custom_module.LitModule
+
+defaults:
+  - optimizer
+  - scheduler
+
+scale: ${data.scale}
+# compile model for faster training with pytorch 2.0
+compile: false

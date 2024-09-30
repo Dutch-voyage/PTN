@@ -1,0 +1,10 @@
+defaults:
+  - default
+net:
+  _target_: src.models.components.SparseTSF.Model
+  input_len: ${data.input_len}
+  output_len: ${data.output_len}
+  period_len: 24
+  num_channels: ${data.num_channels}
+
+

@@ -1,0 +1,33 @@
+defaults:
+  - default
+  - net/embedding: Conv_Embedding
+  - net/encoder: encoder
+  - net/decoder: decoder
+  - net/mapper: RLinear
+  - net/router: router
+
+
+net:
+  _target_: src.models.components.biRecMulti.Model
+  d_model: 32
+  patch_len: 24
+  num_models: 1
+  encoder:
+    num_channels: ${data.num_channels}
+    embedding_type: ${model.net.embedding.type}
+    patch_len: ${model.net.embedding.patch_len}
+    with_ch: true
+    with_tem: true
+  decoder:
+    embedding_type: ${model.net.embedding.type}
+    patch_len: ${model.net.embedding.patch_len}
+  router:
+    input_len: ${data.input_len}
+    num_models: ${model.net.num_models}
+    num_channels: ${data.num_channels}
+  mapper:
+    aux_model:
+      num_models: ${model.net.num_models}
+
+
+
