@@ -30,15 +30,19 @@ class Encoder(nn.Module):
             return x_emb
         x_enc_tem = torch.zeros_like(x_emb)
         x_enc_ch = torch.zeros_like(x_emb)
-        x_emb = rearrange(x_emb, 'b c l d-> (b c) l d')
         if self.with_tem:
             if self.embedding_type == 'patch':
-                x_emb = rearrange(x_emb, 'b c l d-> (b l) c d')
+                x_emb_tem = rearrange(x_emb, 'b c l d-> (b c) l d')
+                x_enc_tem = self.attn(x_emb_tem)
+                x_enc_tem = rearrange(x_enc_tem, '(b c) l d-> b c l d', b=B, c=C)
             elif self.embedding_type == 'conv':
-                x_enc_tem = self.attn(x_emb)
+                x_emb_tem = rearrange(x_emb, 'b c l d-> (b c) l d')
+                x_enc_tem = self.attn(x_emb_tem)
                 x_enc_tem = rearrange(x_enc_tem, '(b c) l d -> b c l d', b=B, c=C)
             elif self.embedding_type == 'patchedconv':
-                x_emb = rearrange(x_emb, 'b c (l p) d -> (b c l) p d', p=self.patch_len)
+                x_emb_tem = rearrange(x_emb, 'b c (l p) d -> (b c l) p d', b=B, p=self.patch_len)
+                x_enc_tem = self.attn(x_emb_tem)
+                x_enc_tem = rearrange(x_enc_tem, '(b c l) p d -> b c (l p) d', b=B,  c=C)
             elif self.embedding_type == 'vanilla':
                 pass
             else:
@@ -47,13 +51,17 @@ class Encoder(nn.Module):
         # tem_x_enc = rearrange(tem_x_enc, '(b c ) l d -> b c l d', b=B, c=C)
         if self.with_ch:
             if self.embedding_type == 'patch':
-                x_enc = rearrange(x_enc, '(b l) c d -> b c l d', b=B)
+                x_emb_ch = rearrange(x_emb, 'b c l d -> (b l) c d', b=B)
+                x_enc_ch = self.attn(x_emb_ch)
+                x_enc_ch = rearrange(x_enc_ch, '(b l) c d -> b c l d', b=B)
             elif self.embedding_type == 'conv':
-                x_emb = rearrange(x_emb, '(b c) l d -> (b l) c d', b=B, c=C)
-                x_enc_ch = self.attn(x_emb)
+                x_emb_ch = rearrange(x_emb, 'b c l d -> (b l) c d', b=B, c=C)
+                x_enc_ch = self.attn(x_emb_ch)
                 x_enc_ch = rearrange(x_enc_ch, '(b l) c d -> b c l d', b=B)
             elif self.embedding_type == 'patchedconv':
-                x_enc = rearrange(x_enc, '(b c l) p d -> b c (l p) d', b=B, c=C)
+                x_emb_ch = rearrange(x_emb, 'b c (l p) d -> (b l p) c d', b=B, p=self.patch_len)
+                x_enc_ch = self.attn(x_emb_ch)
+                x_enc_ch = rearrange(x_enc_ch, '(b l p) c d -> b c (l p) d', b=B, p=self.patch_len)
             elif self.embedding_type == 'vanilla':
                 pass
             else:

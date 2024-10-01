@@ -42,7 +42,6 @@ class Model(nn.Module):
                     nn.Linear(self.input_len, self.output_len))
                 self.LinearTrend.append(
                     nn.Linear(self.input_len, self.output_len))
-
                 self.LinearSeasonal[i].weight = nn.Parameter(
                     (1 / self.input_len) * torch.ones([self.output_len, self.input_len]))
                 self.LinearTrend[i].weight = nn.Parameter(
@@ -90,6 +89,7 @@ class Model(nn.Module):
         results['y_hat'] = y_hat
         results['predloss'] = F.l1_loss(y_hat, y, reduction='none').mean(-1)
         results['recloss'] = F.mse_loss(torch.zeros_like(x), torch.zeros_like(x), reduction='none').mean(-1)
+        # consider to add l1-group normalization for longer look-back-window
         # results['normloss'] = ((self.LinearSeasonal.weight ** 2).mean(0) ** 0.5).mean()
         # results['normloss'] += ((self.LinearTrend.weight ** 2).mean(0) ** 0.5).mean()
         results['normloss'] = F.mse_loss(self.LinearSeasonal.weight, torch.zeros_like(self.LinearSeasonal.weight))
