@@ -4,11 +4,11 @@
 # python train.py task=forecasting
 
 defaults:
-  - override /data: electricity
-  - override /model: biRecMulti
-  - override /model/net/embedding: Conv_Embedding
-  - override /model/net/mapper: RLinear
-  - override /trainer: ddp
+  - override /data: ETTh1
+  - override /model: biRec
+  - override /model/net/embedding: PatchedConv_Embedding
+  - override /model/net/mapper: DLinear
+  - override /trainer: gpu
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters

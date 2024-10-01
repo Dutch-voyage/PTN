@@ -16,6 +16,6 @@ task_name: "eval"
 tags: ["dev"]
 
 # passing checkpoint path is necessary for evaluation
-ckpt_path: /home/yyx/RAN_lightning/logs/train/runs/2024-09-21_17-04-28/checkpoints/last.ckpt
+ckpt_path: null
 
 

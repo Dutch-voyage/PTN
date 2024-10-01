@@ -1,13 +1,20 @@
 defaults:
   - default
-  - net/embedding: Conv_Embedding
-  - net: reconstructor
+  - net/embedding: PatchedConv_Embedding
+  - net/encoder: encoder
+  - net/decoder: decoder
   - net/mapper: DLinear
 
 net:
   _target_: src.models.components.biRec.Model
-  d_model: 32
-  reconstructor:
+  d_model: 16
+  encoder:
+    num_channels: ${data.num_channels}
+    embedding_type: ${model.net.embedding.type}
+    patch_len: ${model.net.embedding.patch_len}
+    with_ch: true
+    with_tem: true
+  decoder:
     num_channels: ${data.num_channels}
     embedding_type: ${model.net.embedding.type}
     patch_len: ${model.net.embedding.patch_len}

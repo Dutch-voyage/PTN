@@ -1,6 +1,6 @@
 _target_: src.models.components.modules.embedding.PatchedConv_Embedding
 _partial_: true
-type: conv
+type: patchedconv
 conv_layers: 5
 patch_len: 16
 amp_factor: 1
