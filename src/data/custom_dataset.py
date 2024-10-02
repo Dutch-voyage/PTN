@@ -15,15 +15,9 @@ data_dict = {
     'ETTh2': 'ETT-small/ETTh2.csv',
     'ETTm1': 'ETT-small/ETTm1.csv',
     'ETTm2': 'ETT-small/ETTm2.csv',
-    'PEMS03': 'PEMS/PEMS03.csv',
-    'PEMS04': 'PEMS/PEMS04.csv',
-    'PEMS07': 'PEMS/PEMS07.csv',
-    'PEMS08': 'PEMS/PEMS08.csv',
     'weather': 'weather/weather.csv',
     'traffic': 'traffic/traffic.csv',
     'electricity': 'electricity/electricity.csv',
-    'illness': 'illness/national_illness.csv',
-    'sin_shift': 'Synthetic/sin_shift.csv'
 }
 
 class Scaler():

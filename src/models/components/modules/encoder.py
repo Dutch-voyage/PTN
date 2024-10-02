@@ -47,8 +47,6 @@ class Encoder(nn.Module):
                 pass
             else:
                 raise ValueError('Invalid embedding type')
-        # tem_x_enc = self.attnch(x_emb)
-        # tem_x_enc = rearrange(tem_x_enc, '(b c ) l d -> b c l d', b=B, c=C)
         if self.with_ch:
             if self.embedding_type == 'patch':
                 x_emb_ch = rearrange(x_emb, 'b c l d -> (b l) c d', b=B)

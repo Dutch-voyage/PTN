@@ -35,9 +35,6 @@ class LitModule(LightningModule):
     def configure_optimizers(self):
     # Define and configure optimizers and LR schedulers.
     ```
-
-    Docs:
-        https://lightning.ai/docs/pytorch/latest/common/lightning_module.html
     """
 
     def __init__(
@@ -128,11 +125,6 @@ class LitModule(LightningModule):
         for item in self.val_mape:
             item.reset()
         self.val_mse_best.reset()
-
-    # def on_after_backward(self) -> None:
-    #     for name, param in self.net.named_parameters():
-    #         if param.grad is None:
-    #             print(name)
 
     def model_step(
         self, batch: Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]
@@ -234,16 +226,7 @@ class LitModule(LightningModule):
             self.log("test/mse_best", self.val_mse[1].compute(), sync_dist=True)
             self.log("test/mae_best", self.val_mae[1].compute(), sync_dist=True)
         self.val_mse_best(mse)  # update best so far val acc
-        # log `val_acc_best` as a value through `.compute()` method, instead of as a metric object
-        # otherwise metric would be reset by lightning after each epoch
         self.log("val/mse_best", self.val_mse_best.compute(), sync_dist=True, prog_bar=True)
-
-
-    # def on_test_start(self):
-    #     if self.trainer.world_size > 1:
-    #         self.trainer.model.net.module.load_params()
-    #     else:
-    #         self.trainer.model.net.load_params()
 
 
     def test_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
@@ -289,14 +272,9 @@ class LitModule(LightningModule):
         """Choose what optimizers and learning-rate schedulers to use in your optimization.
         Normally you'd need one. But in the case of GANs or similar you might have multiple.
 
-        Examples:
-            https://lightning.ai/docs/pytorch/latest/common/lightning_module.html#configure-optimizers
-
         :return: A dict containing the configured optimizers and learning-rate schedulers to be used for training.
         """
-        # self.trainer.model.module.net.init_params()
         optimizer = self.hparams.optimizer(params=self.trainer.model.parameters())
-        # optimizer = SAM(self.trainer.model.parameters(), optimizer)
         if self.hparams.scheduler is not None:
             scheduler = self.hparams.scheduler(optimizer=optimizer)
             return {

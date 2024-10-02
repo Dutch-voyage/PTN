@@ -78,9 +78,6 @@ class RotaryEmbedding(Module):
         cache_if_possible = True
     ):
         super().__init__()
-        # proposed by reddit user bloc97, to rescale rotary embeddings to longer sequence length without fine-tuning
-        # has some connection to NTK literature
-        # https://www.reddit.com/r/LocalLLaMA/comments/14lz7j5/ntkaware_scaled_rope_allows_llama_models_to_have/
 
         theta *= theta_rescale_factor ** (dim / (dim - 2))
 

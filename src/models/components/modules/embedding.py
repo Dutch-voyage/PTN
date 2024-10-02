@@ -41,13 +41,11 @@ class Conv_Embedding(nn.Module):
             self.norms.append(nn.InstanceNorm1d(now_channel * amp_factor))
             now_channel *= 2
 
-        # self.weight = nn.Parameter(torch.randn(amp_factor * (conv_layers + 1), d_model), requires_grad=True)
-        # self.bias = nn.Parameter(torch.randn(d_model), requires_grad=True)
-        # nn.init.xavier_normal_(self.weight)
         self.linear = nn.Linear((conv_layers + 1), d_model)
 
     def forward(self, x):
         B, C, L = x.shape
+        assert L % (2 ** self.conv_layers) == 0
         x = x.reshape(B*C, 1, L).repeat(1, self.amp_factor, 1)
         xs = [rearrange(x, 'b c l -> b l c')]
         # xs = []
@@ -63,10 +61,8 @@ class Conv_Embedding(nn.Module):
             xs.append(rearrange(x, 'b (a c) l -> b (l c) a', a=self.amp_factor))
             current_len = (current_len + 1) // 2
         x_emb = torch.stack(xs, dim=-1)
-        # x_emb = rearrange(x_emb, '(b c) (l p) a n -> b c l (p a n)', c=C, p=self.patch_len)
         x_emb = rearrange(x_emb, '(b c) l a n -> b c l (a n)', c=C)
         x_emb = self.linear(x_emb)
-        # x_emb = torch.einsum('b c l k, k d -> b c l d', x_emb, self.weight[:self.amp_factor * (max_layer + 1), :]) + self.bias
         return x_emb
 
 class PatchedConv_Embedding(nn.Module):
@@ -95,6 +91,7 @@ class PatchedConv_Embedding(nn.Module):
 
     def forward(self, x):
         B, C, L = x.shape
+        assert L % (2 ** self.conv_layers) == 0
         x = x.reshape(B*C, 1, L).repeat(1, self.amp_factor, 1)
         xs = [rearrange(x, 'b c l -> b l c')]
         # xs = []
@@ -110,7 +107,6 @@ class PatchedConv_Embedding(nn.Module):
             xs.append(rearrange(x, 'b (a c) l -> b (l c) a', a=self.amp_factor))
             current_len = (current_len + 1) // 2
         x_emb = torch.stack(xs, dim=-1)
-        # x_emb = rearrange(x_emb, '(b c) (l p) a n -> b c l (p a n)', c=C, p=self.patch_len)
         x_emb = rearrange(x_emb, '(b c) l a n -> b c l (a n)', c=C)
         x_emb = self.linear(x_emb)
         return x_emb
@@ -138,7 +134,7 @@ class ConvPatch_Embedding(nn.Module):
         self.linear = nn.Linear((conv_layers + 1) * patch_len, d_model)
     def forward(self, x):
         B, C, L = x.shape
-        # assert L % (2 ** self.conv_layers) == 0
+        assert L % (2 ** self.conv_layers) == 0
         x = x.reshape(B*C, 1, L)
         xs = [x]
         current_len = L
@@ -148,7 +144,6 @@ class ConvPatch_Embedding(nn.Module):
             x = norm(x)
             x = conv(x)
             x = self.activation(x)
-            # xs.append(rearrange(x, 'b c l -> b l c'))
             xs.append(x)
             current_len = (current_len + 1) // 2
         xs.reverse()
@@ -159,6 +154,5 @@ class ConvPatch_Embedding(nn.Module):
             if x_l.shape[-1] % 2 != 0:
                 x_emb = x_emb[:, :, :-1, :]
             x_emb = torch.cat([x_emb, x_l.unsqueeze(-1)], dim=-1)
-        # x_emb = torch.stack(xs, dim=-1)
         x_emb = rearrange(x_emb.squeeze(1), '(b c) (l p) d -> b c l (p d)', c=C, p=self.patch_len)
         return self.linear(x_emb)

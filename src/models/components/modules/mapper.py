@@ -9,6 +9,7 @@ class Mapper(nn.Module):
                  aux_model_stu: nn.Module = None,):
         super(Mapper, self).__init__()
         self.auxmodel = aux_model(task=task)
+        # for data transfer only
         # self.aux_model_stu = aux_model_stu(task=task)
         if aux_model_stu is not None:
             self.auxmodelstu = aux_model_stu(task=task)

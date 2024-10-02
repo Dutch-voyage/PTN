@@ -22,7 +22,6 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # 1. either install project as a package or move entry files to project root dir
 # 2. set `root_dir` to "." in "configs/paths/default.yaml"
 #
-# more info: https://github.com/ashleve/rootutils
 # ------------------------------------------------------------------------------------ #
 
 from src.utils import (
@@ -38,14 +37,6 @@ log = RankedLogger(__name__, rank_zero_only=True)
 
 @task_wrapper
 def evaluate(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-    """Evaluates given checkpoint on a datamodule testset.
-
-    This method is wrapped in optional @task_wrapper decorator, that controls the behavior during
-    failure. Useful for multiruns, saving info about the crash, etc.
-
-    :param cfg: DictConfig configuration composed by Hydra.
-    :return: Tuple[dict, dict] with metrics and dict with all instantiated objects.
-    """
     assert cfg.ckpt_path
 
     log.info(f"Instantiating datamodule <{cfg.data._target_}>")
@@ -85,14 +76,7 @@ def evaluate(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
 @hydra.main(version_base="1.3", config_path="../configs", config_name="eval.yaml")
 def main(cfg: DictConfig) -> None:
-    """Main entry point for evaluation.
-
-    :param cfg: DictConfig configuration composed by Hydra.
-    """
-    # apply extra utilities
-    # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)
     extras(cfg)
-
     evaluate(cfg)
 
 

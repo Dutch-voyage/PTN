@@ -18,7 +18,6 @@ class Model(nn.Module):
         self.input_len = input_len
         self.output_len = output_len
         if ifmap:
-            # self.num_channels = (1 + num_models) * num_channels
             self.num_channels = num_channels
         else:
             self.num_channels = num_channels

@@ -42,6 +42,4 @@ class Model(nn.Module):
         result['predloss'] = F.l1_loss(y_hat, y, reduction='none').mean(-1)
         result['recloss'] = F.l1_loss(torch.zeros_like(x), torch.zeros_like(x), reduction='none').mean(-1)
         result['normloss'] = (F.mse_loss(torch.zeros_like(self.weight), self.weight, reduction='none').mean(-1) ** 0.5).mean()
-        # result['normloss'] += (F.mse_loss(torch.zeros_like(self.weight), self.weight, reduction='none').mean(0) ** 0.5).mean()
-        # result['normloss'] = torch.zeros_like(result['normloss'])
         return result

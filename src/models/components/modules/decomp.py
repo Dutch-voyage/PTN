@@ -2,8 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
-# https://github.com/thuml/Time-Series-Library/blob/main/layers/Autoformer_EncDec.py
 class moving_avg(nn.Module):
     def __init__(self, kernel_size, stride):
         super(moving_avg, self).__init__()
