@@ -9,6 +9,7 @@ pip install -r requirements.txt
 ```
 
 Then you should specify your data paths in **.env** file 
+
 Finally run with: 
 
 ```
