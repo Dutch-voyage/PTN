@@ -1,4 +1,4 @@
-This is code for Paper "**Learned Data Transformation as A Data-centric Plugin for Enhancing Time Series Forecasting Models**" 
+This is code for Paper "**Learned Data Transformation: A Data-centric Plugin for Enhancing Time Series Forecasting**" 
 
 The template we use is https://github.com/ashleve/lightning-hydra-template
 
