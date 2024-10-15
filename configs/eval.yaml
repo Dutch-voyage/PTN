@@ -2,14 +2,14 @@
 
 defaults:
   - _self_
-  - data: ETTh2 # choose datamodule with `test_dataloader()` for evaluation
-  - model: biRecMultiNorm
+  - data: ETTh1 # choose datamodule with `test_dataloader()` for evaluation
+  - model: biRecMulti
   - logger: null
   - trainer: default
   - paths: default
   - extras: default
   - hydra: default
-  - task: forecasting_multi_norm
+  - task: forecasting
 
 task_name: "eval"
 

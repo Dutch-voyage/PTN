@@ -80,6 +80,7 @@ class PatchedConv_Embedding(nn.Module):
         self.convs = nn.ModuleList([])
         self.norms = nn.ModuleList([])
         self.activation = nn.GELU()
+        self.conv_layers = conv_layers
         for _ in range(conv_layers):
             conv = nn.Conv1d(now_channel * amp_factor, now_channel * 2 * amp_factor, kernel_size=3, stride=2, padding=1) # , groups=now_channel)
             self.convs.append(conv)
